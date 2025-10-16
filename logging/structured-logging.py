@@ -26,4 +26,32 @@ json_logger.info("Structured logging initialized")
 
 # Logging with extra context
 
+print("\nLogging with extra context")
+print("------------------------------\n")
+
+extra_context = {
+    "context_data": {
+        "user_id": 123, 
+        "session_id": "abc123",
+        "source_ip": "10.0.0.5"
+
+    }
+    
+}
+
+json_logger.warning(
+    "Request took longer than 5s to complete", 
+    extra=extra_context)
+
+
 # Logging exceptions as JSON
+
+print("\nLogging exceptions as JSON")
+print("------------------------------\n")
+
+try:
+    result = 1 / 0
+except ZeroDivisionError:
+    json_logger.exception(
+        "ZeroDivisionError occurred",
+        extra={"operation": "divide", "value": 0})    
