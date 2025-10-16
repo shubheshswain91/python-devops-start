@@ -3,9 +3,10 @@ import logging.config
 import os
 from pathlib import Path
 from typing import Dict, Any
+import json
 
 """ 
-# Uncomment the following lines to load logging config from an INI file
+# Uncomment the following lines to test INI-based logging
 
 # Declarative logging configuration - INI-file
 print("Declarative logging configuration - INI-file")
@@ -28,7 +29,8 @@ logging.config.fileConfig(
 app_logger = logging.getLogger("application")
 app_logger.debug("INI-style fileConfig is working!") """
 
-
+""" 
+# Uncomment the following lines to test dict-based logging
 # Declarative logging configuration - Dictionary config
 
 print("Declarative logging configuration - Dictionary config")
@@ -61,9 +63,23 @@ dict_config:Dict[str, Any] = {
 logging.config.dictConfig(dict_config)
 config_logger = logging.getLogger("config.dict")
 config_logger.debug("Dictionary-style dictConfig is working!")
-config_logger.info("This is an info message")
+config_logger.info("This is an info message") """
 
 # Declarative logging configuration - JSON config
+
+print("Declarative logging configuration - JSON config")
+print("----------------------------------------\n")
+
+base_dir = Path(__file__).parent
+config_path = base_dir / "declarative-config.json"
+
+with open(config_path, "r") as config_file:
+    json_config = json.load(config_file)
+
+logging.config.dictConfig(json_config)
+config_logger = logging.getLogger("config.json")
+config_logger.debug("JSON-style dictConfig is working!")
+config_logger.info("INFO goes to the console")
 
 # Dynamically building config
 
