@@ -1,10 +1,10 @@
 service:
   name: listener-service
-  port: 6789
+  port: 8080
   workers: 4
-  enabled: false
+  enabled: true
 queues:
-- high
 - default
+- high
 - low
-retry_policy: null
+retry:policy: null
