@@ -1,3 +1,4 @@
-host,port,tags,status
-web01,80,undefined,running
-db02,undefined,"prod,finance",maintenance
+host,status,tags,port
+web01,running,undefined,80
+app02,stopped,undefined,8080
+db01,running,"['frontend', 'prod']",undefined
