@@ -95,3 +95,6 @@ celerybeat-schedule
 .mypy_cache/
 .pyre/
 .env*
+
+# Other files
+anaconda_projects/db/project_filebrowser.db
