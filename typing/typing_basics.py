@@ -18,5 +18,9 @@ def get_server_status(hostaname: str, port: int) -> str:
         return "Server is down"
 
 # Section: Python Remains Dynamically Typed
+def process_id(user_id: int) -> None:
+    print(f"Processing user ID: {user_id} (type: {type(user_id)}")
 
 # Demonstration of dynamic typing
+process_id(123)
+process_id("user-123")
