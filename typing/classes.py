@@ -1,4 +1,5 @@
-from typing import Self
+from __future__ import annotations
+from typing import Self, Optional
 
 # Section: Classes as Type Hints
 
@@ -62,3 +63,20 @@ my_calc = Calculator()
 print(my_calc.add(5).subtract(3).multiply(2).get_total())  
 
 # Section: Forward References (Strings)
+
+
+class Employee:
+    def __init__(self, name: str, manager: Optional[Employee] = None) -> None:
+        self.name: str = name
+        self.manager: Optional[Employee] = manager
+        self.reports: list[Employee] = []
+
+    def add_report(self, report: Employee) -> None:
+        self.reports.append(report)
+        
+
+ceo = Employee("John Doe")
+manager1 = Employee("Jane Smith", manager=ceo)
+ceo.add_report(manager1)   
+
+print(f"CEO: {ceo.name}")
