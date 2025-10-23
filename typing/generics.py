@@ -1,4 +1,4 @@
-from typing import Optional, TypeVar
+from typing import Optional, TypeVar, Generic
 
 # Section: Defining a generic function to get the first item of a list
 
@@ -58,3 +58,30 @@ all_resources = [vm1, vm2, container1, container2]
 deployed_resources = filter_deployment(all_resources)
 
 # Section: Generic class SimpleStack
+G = TypeVar('G')
+
+class SimpleStack(Generic[G]):
+    def __init__(self) -> None:
+        self._items: list[G] = []
+
+    def push(self, item: G) -> None:   
+        self._items.append(item)
+
+    def pop(self) -> G:  
+        if self.is_empty():
+            raise IndexError("Pop from empty stack")
+        return self._items.pop()
+    
+    def peek(self) -> Optional[G]:
+        if not self._items:
+            return None
+        return self._items[-1]
+    
+    def is_empty(self) -> bool:
+        return not self._items
+    
+str_stack = SimpleStack[str]()
+str_stack.push("apple")
+
+int_stack = SimpleStack[int]()
+int_stack.push(5)
