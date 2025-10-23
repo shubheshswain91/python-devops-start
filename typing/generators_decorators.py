@@ -1,6 +1,6 @@
 # Section: Typing Decorators (simple_logging_decorator)
 
-from typing import Callable, Any, TypeVar, ParamSpec, Generator
+from typing import Callable, Any, TypeVar, ParamSpec, Generator, Iterable
 import functools
 
 
@@ -64,3 +64,11 @@ print(test_accumulate.send(3.0))  # Send another value
 print(test_accumulate.send)  
 
 # Section: Iterable & Iterator
+
+def process_items(items: Iterable[str]) -> list[str]:
+    return [item.upper() for item in items]
+
+print(process_items(["apple", "banana", "cherry"]))
+print(process_items(("apple", "banana", "cherry")))
+print(process_items({"apple", "banana", "cherry"}))
+print(process_items({"a":"b", "hello": "world"}))
