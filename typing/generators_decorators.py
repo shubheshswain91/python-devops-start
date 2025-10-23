@@ -1,6 +1,6 @@
 # Section: Typing Decorators (simple_logging_decorator)
 
-from typing import Callable, Any, TypeVar, ParamSpec
+from typing import Callable, Any, TypeVar, ParamSpec, Generator
 import functools
 
 
@@ -39,6 +39,28 @@ result_sub = subract(5, 10)
 
 # Section: Typing Generators
 
+def count_up_to(limit: int) -> Generator[int, None, str]:
+    for i in range(limit):
+        yield i
 
+    return "Counting completed"    
+
+def accumulate_and_send() -> Generator[float, float | None, None]:
+    total = 0.0
+    try:
+        while True:
+            sent = yield total
+            if sent:
+                total += sent
+    except GeneratorExit:
+        pass 
+
+test_accumulate = accumulate_and_send()    
+next(test_accumulate)  # Start the generator        
+print(test_accumulate.send(1.0))  # Send an initial value
+print(next(test_accumulate) ) # Send another value)
+print(test_accumulate.send(2.0))  # Send another value
+print(test_accumulate.send(3.0))  # Send another value
+print(test_accumulate.send)  
 
 # Section: Iterable & Iterator
