@@ -65,6 +65,7 @@ def test_longest_word() -> None:
 
 # Section: Pytest’s Rich Failure Output
 
+@pytest.mark.xfail(reason="This test is expected to fail")
 def test_string_mismatch() -> None:
     expected = "HEllo WOrlD"
     actual = "hello world"
