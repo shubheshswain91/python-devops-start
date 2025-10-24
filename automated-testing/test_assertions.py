@@ -77,8 +77,13 @@ def test_float_approximation() -> None:
     calculated_val = 0.1 + 0.2
     expected_val = 0.3
 
-    assert calculated_val == pytest.approx(expected_val), "Expected value does not match"
+    assert calculated_val == pytest.approx(expected_val), "Expected value does not match"  # approx used to compare floating point numbers
+
 # Section: Asserting Exceptions (`pytest.raises`)
+
+def test_raises_exception() -> None:
+    with pytest.raises(ZeroDivisionError):
+        _division = 1 / 0 
 
 
 #######################################################  pytest commands ###############################
