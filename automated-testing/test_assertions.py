@@ -1,3 +1,10 @@
+
+
+
+import os
+import sys
+# sys.path.append(r"C:\Users\Shubhesh Swain\Desktop\DevOps\Udemy\python-devops-start\automated-testing")
+from text_analysis import calculate_text_attributes
 # Section: The `assert` Statement
 
 # Uncoment the following lines to see the assertion failure
@@ -12,6 +19,55 @@ def test_string_equality() -> None:
     actual_status = "success".upper()
 
     assert expected_status == actual_status, f'Expected "{expected_status}" but got "{actual_status}"'
+
+def test_word_count() -> None:
+    text =  "Deploying microservice to the Kubernetes cluster"
+    text_empty = ""
+    assert (calculate_text_attributes(text)["word_count"]) == 6
+    assert (calculate_text_attributes(text_empty)["word_count"]) == 0
+
+def test_unique_words() -> None:
+    text =  "Deploying microservice to the Kubernetes cluster"
+    text_with_duplicates = "Deploying deploying"
+    text_empty = ""
+
+    text_results = calculate_text_attributes(text)
+    text_results_duplicates = calculate_text_attributes(text_with_duplicates)
+    text_results_empty = calculate_text_attributes(text_empty)
+   
+
+    assert (len(set(text_results["unique_words"]))) == 6
+    assert (len(set(text_results_duplicates["unique_words"]))) == 1
+    assert (len(set(text_results_empty["unique_words"]))) == 0
+def test_average_word_length() -> None:
+    text =  "Deploying microservice to Kubernetes cluster" # 40 / 5 = 8.0
+    text_with_duplicates = "Deploying deploying"  # 18 / 2 = 9.0
+    text_empty = "" # 0 / 0 = 0.0
+
+    text_results = calculate_text_attributes(text)
+    text_results_duplicates = calculate_text_attributes(text_with_duplicates)
+    text_results_empty = calculate_text_attributes(text_empty)
+   
+
+    assert (text_results["average_word_length"]) == 8.0
+    assert (text_results_duplicates["average_word_length"]) == 9.0
+    assert (text_results_empty["average_word_length"]) == 0.0
+
+def test_longest_word() -> None:
+    text =  "Deploying microservice to Kubernetes cluster" # microservice
+    text_with_duplicates = "Deploying deploying"  # Deploying
+    text_empty = "" # 0 / 0 = 0.0
+
+    text_results = calculate_text_attributes(text)
+    text_results_duplicates = calculate_text_attributes(text_with_duplicates)
+    text_results_empty = calculate_text_attributes(text_empty)
+   
+
+    assert (text_results["longest_word"].lower()) == "microservice"
+    assert (text_results_duplicates["longest_word"].lower()) == "deploying"
+    assert (text_results_empty["longest_word"]) == ""   
+
+
 # Section: Pytest’s Rich Failure Output
 
 # Section: Asserting Floating-Point Numbers (`pytest.approx`)
@@ -19,6 +75,7 @@ def test_string_equality() -> None:
 # Section: Asserting Exceptions (`pytest.raises`)
 
 
+#######################################################  pytest commands ###############################
 # commands to run the tests
 # pytest 
 
@@ -29,3 +86,7 @@ def test_string_equality() -> None:
 # pytest -ra # to show all tests, including skipped ones
 
 # pytest -rA # to show all tests, including skipped ones, and show their source code 
+
+# pytest -ra -s  # to show all tests and also the print statements
+
+#######################################################################################################
