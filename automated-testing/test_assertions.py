@@ -1,10 +1,5 @@
-
-
-
-import os
-import sys
-# sys.path.append(r"C:\Users\Shubhesh Swain\Desktop\DevOps\Udemy\python-devops-start\automated-testing")
 from text_analysis import calculate_text_attributes
+import pytest
 # Section: The `assert` Statement
 
 # Uncoment the following lines to see the assertion failure
@@ -70,8 +65,19 @@ def test_longest_word() -> None:
 
 # Section: Pytest’s Rich Failure Output
 
+def test_string_mismatch() -> None:
+    expected = "HEllo WOrlD"
+    actual = "hello world"
+
+    assert expected == actual, f'Expected "{expected}" but got "{actual}"'
+
 # Section: Asserting Floating-Point Numbers (`pytest.approx`)
 
+def test_float_approximation() -> None:
+    calculated_val = 0.1 + 0.2
+    expected_val = 0.3
+
+    assert calculated_val == pytest.approx(expected_val), "Expected value does not match"
 # Section: Asserting Exceptions (`pytest.raises`)
 
 
