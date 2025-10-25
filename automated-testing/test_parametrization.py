@@ -68,3 +68,32 @@ def test_is_valid_hostname_char(
     assert is_valid_hostname_char(input_char) is expected_result
 
 # Section: Customizing Test IDs with pytest.param construct
+
+@pytest.mark.parametrize(
+    "url_to_check, expected_status_code, expected_status_text",
+    [
+    ("https://google.com", 200, "OK"),
+    ("https://fakesite123.org/notfound", 404, "HTTP_ERROR (404)"),
+    ("http://httpbin.org/status/503", 503, "HTTP_ERROR (503)"),
+    ("http://localhost:1", "CONNECTION_ERROR", "CONNECTION_ERROR"),
+    pytest.param(
+        "https://pending.retries.tests", 503,"HTTP_ERROR (503)", marks=pytest.mark.xfail(reason="retry logic for 503 is not yet implemented"))  # (Note: You can add more test
+    ],
+    ids=[
+        "google_ok",
+        "site_not_found",
+        "server_error_503",
+        "connection_error",
+        "xfail_retry_case"
+    ]    
+)
+
+def test_various_urls_statuses(
+    url_to_check: str, expected_status_code: int, expected_status_text: str
+):
+    status_code, status_text = check_url_status(url_to_check)
+    assert status_code == expected_status_code
+    assert status_text == expected_status_text
+
+    
+    
