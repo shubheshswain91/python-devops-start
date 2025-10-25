@@ -22,6 +22,15 @@ def test_with_optional_dependency() -> None:
 
 # Section: Expected Failures: @pytest.mark.xfail
 
+@pytest.mark.xfail(reason="Bug #123: Division by zero not handled properly.")
+def test_division_by_zero() -> None:
+    _division = 1 / 0  # This will raise a ZeroDivisionError
+    assert False
+
+@pytest.mark.xfail    # Add strict=True to make XPASS lead to a failure
+def test_expected_to_fail() -> None:    
+    assert True
+
 # Section: Custom Markers and Registration
 
 # Section: Running Tests by Marker (m option)
