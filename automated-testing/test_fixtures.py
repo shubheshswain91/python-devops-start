@@ -2,6 +2,8 @@ import pytest
 from pathlib import Path
 from typing import Iterator, Iterable
 import tempfile
+from conftest import ManagedResource
+
 # Section: Defining a Simple Fixture with @pytest.fixture
 
 ConfigDict = dict[str, str | int]
@@ -70,3 +72,6 @@ def global_setup() -> Iterable[None]:
 # Section: Fixture Scope and Lifecycle
 
 # Section: Sharing Fixtures with conftest.py
+
+def test_managed_resource(managed_resource: ManagedResource):
+    assert managed_resource["status"] == "lock_acquired"
