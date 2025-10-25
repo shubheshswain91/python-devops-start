@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from typing import Iterator
+from typing import Iterator, Iterable
 import tempfile
 # Section: Defining a Simple Fixture with @pytest.fixture
 
@@ -42,6 +42,30 @@ def test_read_from_temp_file(temp_config_file: Path):
 
 
 # Section: Using Fixtures in Test Functions
+
+@pytest.fixture(scope="session")
+def expensive_resource() -> Iterator[ConfigDict]:
+    print(
+        "\n [SESSION FIXTURE]: expensive_resource - creating..."
+    )
+    yield {"id": "session_resource", "value": 123}
+    print(
+        "\n [SESSION FIXTURE]: expensive_resource - deleting..."
+    )
+
+def test_expensive_resource_id(expensive_resource: ConfigDict):
+    print(f" [Test]:  test_expensive_resource id running...")
+    assert expensive_resource["id"] == "session_resource" 
+
+def test_expensive_resource_value(expensive_resource: ConfigDict):
+    print(f" [Test]:  test_expensive_resource value running...")
+    assert expensive_resource["value"] == 123     
+
+@pytest.fixture(scope="session", autouse=True)  
+def global_setup() -> Iterable[None]:
+    print("\n [SESSION FIXTURE]: global_setup - creating...")
+    yield
+    print("\n [SESSION FIXTURE]: global_setup - deleting...")  
 
 # Section: Fixture Scope and Lifecycle
 
