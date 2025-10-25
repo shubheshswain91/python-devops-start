@@ -1,4 +1,5 @@
 import pytest
+import time
 
 try:
     import some_optional_library  # type: ignore[import]
@@ -33,4 +34,19 @@ def test_expected_to_fail() -> None:
 
 # Section: Custom Markers and Registration
 
+@pytest.mark.slow
+def test_very_long_computations() -> None:
+    time.sleep(5)
+    assert True
+
+@pytest.mark.api
+@pytest.mark.smoke
+def test_user_creation() -> None:
+    assert True
+
+
 # Section: Running Tests by Marker (m option)
+# pytest -m "smoke"
+# pytest -m "slow"
+# pytest -m "smoke or slow"
+# pytest -m "smoke or (not slow)"
