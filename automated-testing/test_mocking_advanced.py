@@ -1,4 +1,5 @@
 import subprocess
+import pytest
 from unittest.mock import MagicMock
 from pytest_mock import MockerFixture
 from dummy_functions import get_current_user, check_file_exists, fetch_both_endpoints
@@ -57,3 +58,31 @@ def test_fecth_both_endpoints_by_url(mocker: MockerFixture):
 
 
 # Section: Choosing between Mock and MagicMock
+
+@pytest.mark.xfail(reason="Context managers do not work with Mock", strict=True)
+def test_context_manager_with_mock(mocker: MockerFixture):
+    fake_cm = mocker.Mock()
+    fake_cm.__enter__.return_value = fake_cm
+    fake_cm.read.return_value = "file contents"
+
+    mock_open = mocker.patch("builtins.open")
+    mock_open.return_value = fake_cm
+    with open("test.txt", "r") as file:
+        contents = file.read()
+
+    mock_open.assert_called_once_with("test.txt")
+    assert contents == "file contents"
+
+
+def test_context_manager_with_magicmock(mocker: MockerFixture):
+    fake_cm = mocker.MagicMock()
+    fake_cm.__enter__.return_value = fake_cm
+    fake_cm.read.return_value = "file contents"
+
+    mock_open = mocker.patch("builtins.open")
+    mock_open.return_value = fake_cm
+    with open("test.txt", "r") as file:
+        contents = file.read()
+
+    mock_open.assert_called_once_with("test.txt")
+    assert contents == "file contents"
