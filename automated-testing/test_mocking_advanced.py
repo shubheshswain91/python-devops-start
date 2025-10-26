@@ -1,6 +1,7 @@
 import subprocess
+from unittest.mock import MagicMock
 from pytest_mock import MockerFixture
-from dummy_functions import get_current_user, check_file_exists
+from dummy_functions import get_current_user, check_file_exists, fetch_both_endpoints
 
 # Section: Using side_effect - Exceptions
 
@@ -31,5 +32,28 @@ def test_check_file_exists_side_effects_list(mocker: MockerFixture):
     assert [call.args[0] for call in mock_exists.call_args_list] == [("file1.txt"), ("file2.txt")]
 
 # Section: Using side_effect - Callable for Multiple Calls
+
+def test_fecth_both_endpoints_by_url(mocker: MockerFixture):
+    fake_responses: dict[str, MagicMock] = {}
+
+    for url, data in [
+        ("https://api.example.com/first", {"first": "data"}),
+        ("https://api.example.com/second", {"second": "data"}),
+    ]:
+        resp = mocker.MagicMock()
+        resp.status_code = 200
+        resp.json.return_value = data
+
+        fake_responses[url] = resp
+
+    def _fake_get(url: str) -> MagicMock:
+        return fake_responses[url]
+    
+    mocker.patch("dummy_functions.requests.get", side_effect=_fake_get)
+
+    result = fetch_both_endpoints()
+
+    assert result == ({"first": "data"}, {"second": "data"})
+
 
 # Section: Choosing between Mock and MagicMock
