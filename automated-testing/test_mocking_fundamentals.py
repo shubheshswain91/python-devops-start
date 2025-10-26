@@ -1,7 +1,7 @@
 from unittest.mock import patch, Mock, MagicMock
 from dummy_functions import check_file_exists 
 from pytest_mock import MockerFixture
-
+from dummy_functions import get_user_data
 # Section: Using unittest.mock.patch
 
 def test_check_file_exists_manual_patch() -> None:
@@ -50,3 +50,16 @@ def test_check_file_pytest_mocker(mocker: MockerFixture) -> None:
     assert result is True    
 
 # Section: MagicMock and Configuring Mock Objects
+def test_get_user_data_success(mocker: MockerFixture) -> None:
+    mock_api_response: dict[str, str | int] = {
+        "id": 1, 
+        "name": "John Doe"
+    }
+    mock_get = mocker.patch("dummy_functions.requests.get")
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json.return_value = mock_api_response
+
+    _data = get_user_data(user_id=1)
+    
+    mock_get.assert_called_once_with(f"https://api.example.com/users/1")
+    assert _data == mock_api_response
