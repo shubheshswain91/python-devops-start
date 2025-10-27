@@ -1,6 +1,6 @@
 print("Main script starting")
 
-from file_ops import check_file_extension as check_file
+from devops_utils import check_file_extension as check_file
 import sys
 
 print(sys.path)
